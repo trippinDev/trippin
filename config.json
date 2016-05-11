@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "port": 8080,
+  "dbinfo" : {
+    "host"     : "localhost",
+    "user": "root",
+    "database" : "trippin",
+    "connectionLimit": 20,
+    "waitForConnections": false
+  }
+}
