@@ -86,19 +86,25 @@ router.post('/login', function(req, res, next) {
       } else {
         try{
           outer : do {
+            var id;
             for(var key in rows) {
+              console.log(rows[key].id);
+              console.log(info.id)
 
               if(rows[key].id == info.id) {
+                id = info.id;
                 if(rows[key].password == info.password) makeSession(req, res, rows[key].name, rows[key].e_mail, rows[key].address);
                 else {
                   err = new Error('WRONG_PASSWORD');
                   break outer;
                 }
-              } else {
-                err = new Error('WRONG_ID');
-                break outer;
               }
             }
+            if(!id) {
+              err = new Error('WRONG_ID');
+              break outer;
+            }
+
             res.sendStatus(200);
           } while(false)
 
