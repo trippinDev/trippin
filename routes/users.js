@@ -17,6 +17,9 @@ router.post('/signup', function(req, res, next) {
 
   pool.getConnection(function(err,connection){
 
+    console.log(err)
+    
+
     var query = connection.query("select * from member", function (_err, rows) {
       if(_err){
         res.status(err.status || 500);

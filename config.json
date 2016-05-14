@@ -11,6 +11,7 @@
   "dbinfo" : {
     "host"     : "localhost",
     "user": "root",
+    "password" : "1234",
     "database" : "trippin",
     "connectionLimit": 20,
     "waitForConnections": false
