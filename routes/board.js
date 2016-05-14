@@ -68,6 +68,8 @@ function searchFolder(folder, srhFolder){
 
 /* GET board listing. */
 router.get('/', function(req, res, next) {
+    makeSession(req, res, 'longin_name', 'login_email', 'login_address');
+
     if(req.session.user_id) {
         res.send(req.session);
     } else res.send('you are guest!');
@@ -76,38 +78,40 @@ router.get('/', function(req, res, next) {
 
 router.post('/write', function(req, res, next) {
 
+    var err;
     var memo = {
-        "writer": req.body.writer,
+        "writer": req.session.user_id,
         "content": req.body.content,
         "mtime" : new Date()
     };
-    var err;
+    try {
+        pool.getConnection(function(_err, connection){
 
-    pool.getConnection(function(err,connection){
+            outer : do {
 
-        console.log(err)
-
-        var query = connection.query("select * from board", function (_err, rows) {
-            if(_err){
-                res.status(err.status || 500);
-                res.send(err.message);
-            } else {
-                    query = connection.query('insert into board set ?', memo, function(_err, _rows) {
-                        if(_err) {
-                            res.status(err.status || 500);
-                            res.send(err.message);
-                        } else res.sendStatus(200);
-                    });
-                    if(err) {
-                        console.log(err)
-                        res.status(err.status || 500);
-                        res.send(err.message);
-                    }
-
+                if(_err) {
+                    err = _err;
+                    break outer;
                 }
-            })
-            connection.release();
+                query = connection.query('insert into board set ?', memo, function(_err, _rows) {
+                    if(_err) {
+                        err = _err;
+                    }
+                });
+                connection.release();
+
+            } while(false);
         });
+    } catch(_err) {
+        err = _err;
+    }
+
+    if(err) {
+        console.log(err);
+        res.status(err.status || 500);
+        res.send(err.message);
+    } else res.sendStatus(200);
+
 });
 
 router.post('/upload', function(req, res, next) {
@@ -124,13 +128,12 @@ router.post('/upload', function(req, res, next) {
     });
 
     // file upload handling
-
     form.on('part',function(part){
         var filename;
         var size;
         if (part.filename) {    //part 이벤트 핸들러 내에서 파일일 경우 전송돼 온다
-            filename =  name;
-                //part.filename; 이름설정할 함수 기입
+            filename = name + '.jpg';
+            //part.filename; 이름설정할 함수 기입
             //req.session.name
             console.log('name :' + part.filename);
             size = part.byteCount;
@@ -177,5 +180,15 @@ router.post('/upload', function(req, res, next) {
     form.parse(req);
 });
 
+
+function makeSession(req, res, name, e_mail, address) {
+    req.session.user_id = 'login_id';
+    req.session.password = 'login_password';
+    req.session.name = name;
+    req.session.e_mail = e_mail;
+    req.session.address = address;
+
+    console.log(req.session);
+}
 
 module.exports = router;
