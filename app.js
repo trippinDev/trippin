@@ -9,12 +9,12 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var board = require('./routes/board');
-
 var config = require('./config.json');
 
 var app = express();
 
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({
   key: 'sid',
   secret: 'secret',
@@ -28,7 +28,7 @@ app.use(session({
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');   ///
+app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -40,7 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/board', board); //게시판 라우터 접근
+app.use('/board', board);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
