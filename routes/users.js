@@ -153,4 +153,6 @@ function destroySession(req, res) {
   res.clearCookie('sid');
 }
 
+
+
 module.exports = router;
