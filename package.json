@@ -16,6 +16,7 @@
     "mysql": "~2.10.2",
     "cookie-parser": "~1.4.1",
     "express-session": "~1.13.0",
-    "multiparty": "~4.1.2"
+    "multiparty": "~4.1.2",
+    "async": "~2.0.0"
   }
 }
