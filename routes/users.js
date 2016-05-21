@@ -114,6 +114,7 @@ router.post('/login', function(req, res, next) {
           if(err) {
             res.status(err.status || 500);
             res.send(err.message);
+
           }
 
         } catch(err) {
