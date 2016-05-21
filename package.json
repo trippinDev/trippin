@@ -17,6 +17,8 @@
     "cookie-parser": "~1.4.1",
     "express-session": "~1.13.0",
     "multiparty": "~4.1.2",
-    "async": "~2.0.0"
+    "async": "~2.0.0",
+    "date-utils" : "~1.2.21",
+    "walker" : "~1.0.7"
   }
 }
